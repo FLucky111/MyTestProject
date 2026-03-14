@@ -69,7 +69,7 @@ function App() {
                   placeholder="Введите имя"
               />
 
-              <p>Привет, {name}</p>
+              <p>Привет, {name}!</p>
               
             </div>
           </section>
