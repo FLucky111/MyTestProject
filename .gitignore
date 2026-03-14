@@ -1,0 +1,18 @@
+# Rider
+.idea/
+*.sln.iml
+
+# .NET
+**/bin/
+**/obj/
+
+# Frontend
+**/node_modules/
+**/dist/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
