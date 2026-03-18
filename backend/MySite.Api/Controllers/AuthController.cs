@@ -27,6 +27,10 @@ public class AuthController : ControllerBase
         var emailExists = await _context.Users.AnyAsync(x => x.Email == dto.Email);
         if (emailExists)
             return BadRequest(new { message = "Пользователь с таким email уже существует" });
+        
+        var userNameExists = await _context.Users.AnyAsync(x => x.UserName == dto.UserName);
+        if (userNameExists)
+            return BadRequest(new { message = "Пользователь с таким именем уже существует" });
 
         var user = new User
         {
