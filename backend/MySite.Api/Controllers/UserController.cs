@@ -17,6 +17,7 @@ public class UsersController : ControllerBase
         _context = context;
     }
 
+    //Информация об авторизированном пользователе
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> Me()

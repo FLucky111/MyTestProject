@@ -1,5 +1,8 @@
 namespace MySite.Api.Models;
 
+/// <summary>
+/// Модель пользователя
+/// </summary>
 public class User
 {
     public int Id { get; set; }
