@@ -21,9 +21,16 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
+    /// <summary>
+    /// Регистрация
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
+        //Проврка на дублирование email и UserName
         var emailExists = await _context.Users.AnyAsync(x => x.Email == dto.Email);
         if (emailExists)
             return BadRequest(new { message = "Пользователь с таким email уже существует" });
@@ -36,12 +43,15 @@ public class AuthController : ControllerBase
         {
             UserName = dto.UserName,
             Email = dto.Email,
+            //Хеширование пароля
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
         };
 
+        //Добавление пользователя в БД
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
+        //Создание токена
         var token = _tokenService.CreateToken(user);
 
         return Ok(new
@@ -55,10 +65,16 @@ public class AuthController : ControllerBase
             }
         });
     }
-
+    
+    /// <summary>
+    /// Аутентификация
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
+        //Проверка логина (email) и пароля
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == dto.Email);
         if (user == null)
             return Unauthorized(new { message = "Неверный email или пароль" });
@@ -67,8 +83,9 @@ public class AuthController : ControllerBase
         if (!passwordValid)
             return Unauthorized(new { message = "Неверный email или пароль" });
 
+        //Создание токена
         var token = _tokenService.CreateToken(user);
-
+        
         return Ok(new
         {
             token,
