@@ -42,4 +42,16 @@ public class UsersController : ControllerBase
 
         return Ok(user);
     }
+    
+    [Authorize]
+    [HttpGet("debug-auth")]
+    public IActionResult DebugAuth()
+    {
+        return Ok(new
+        {
+            isAuthenticated = User.Identity?.IsAuthenticated,
+            name = User.Identity?.Name,
+            claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList()
+        });
+    }
 }
