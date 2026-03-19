@@ -1,30 +1,25 @@
 import { useState } from "react"
-import api from "../api/api"
+// @ts-ignore
+import { useAuth } from "../context/AuthContext"
 
-function Register({ setUser }) {
-    const [email, setEmail] = useState("")
+function Register() {
+    const { register } = useAuth()
+
     const [userName, setUserName] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
 
     const handleRegister = async () => {
         try {
-            const res = await api.post("/auth/register", {
-                userName,
-                email,
-                password
-            })
-            
-            alert("Вы зарегистрировались, вы молодец!")
+            await register(userName, email, password)
 
-            // очистка полей UserName, Email и Password, очистка старых ошибок
-            setError("")
             setUserName("")
             setEmail("")
             setPassword("")
-            
+            setError("")
         } catch (err) {
-            setError("Ошибка регистрации, жесть, поменяй ник или почту")
+            setError("Ошибка регистрации")
         }
     }
 
@@ -33,22 +28,22 @@ function Register({ setUser }) {
             <h2>Register</h2>
 
             <input
-                placeholder="userName"
+                placeholder="UserName"
                 value={userName}
-                onChange={e => setUserName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)}
             />
-            
+
             <input
                 placeholder="Email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
             />
 
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
             />
 
             <button onClick={handleRegister}>Register</button>

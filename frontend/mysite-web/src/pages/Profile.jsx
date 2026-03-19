@@ -1,18 +1,7 @@
-import { useEffect } from "react"
-import api from "../api/api"
+import { useAuth } from "../context/AuthContext"
 
-function Profile({ user, setUser }) {
-    const handleLogout = () => {
-        localStorage.removeItem("token")
-        setUser(null)
-    }
-    
-    useEffect(() => {
-        if (!user)
-            api.get("/users/me")
-                .then(res => setUser(res.data))
-                .catch(() => {})
-    }, [user, setUser])
+function Profile() {
+    const { user, logout } = useAuth()
 
     return (
         <div>
@@ -20,13 +9,12 @@ function Profile({ user, setUser }) {
 
             {user ? (
                 <>
-                <pre>{JSON.stringify(user, null, 2)}</pre>
-                <button onClick={handleLogout}>Logout</button>
+                    <pre>{JSON.stringify(user, null, 2)}</pre>
+                    <button onClick={logout}>Logout</button>
                 </>
             ) : (
-                <p>Пользователь не авторизирован</p>
+                <p>Пользователь не авторизован</p>
             )}
-            
         </div>
     )
 }
