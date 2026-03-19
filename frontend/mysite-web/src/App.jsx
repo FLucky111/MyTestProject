@@ -8,11 +8,17 @@ function App() {
     
     return (
         <div>
-            <Register user={user} setUser={setUser} />
-            <hr />
-            <Login setUser={setUser} />
-            <hr />
-            <Profile setUser={setUser} />
+            {!user ? (
+                <>
+                    <Register user={user} setUser={setUser} />
+                    <hr />
+                    <Login setUser={setUser} />
+                </>
+                ) :
+                (
+                    <Profile user={user} setUser={setUser} />
+                )
+            }
         </div>
     )
 }

@@ -21,6 +21,12 @@ function Login({ setUser }) {
             setUser(userRes.data)
 
             alert("Вы вошли в профиль, поздравляю!")
+            
+            // очистка полей Email и Password, очистка старых ошибок
+            setError("")
+            setEmail("")
+            setPassword("")
+            
         } catch (err) {
             setError("Ошибка входа, иди отсюда")
         }
