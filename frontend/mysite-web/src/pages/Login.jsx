@@ -1,34 +1,22 @@
 import { useState } from "react"
-import api from "../api/api"
+import { useAuth } from "../context/AuthContext"
 
-function Login({ setUser }) {
+function Login() {
+    const { login } = useAuth()
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
 
     const handleLogin = async () => {
         try {
-            const res = await api.post("/auth/login", {
-                email,
-                password
-            })
-            
-            // сохраняем токен
-            localStorage.setItem("token", res.data.token)
-            
-            // сразу получаем пользователя
-            const userRes = await api.get("/users/me")
-            setUser(userRes.data)
+            await login(email, password)
 
-            alert("Вы вошли в профиль, поздравляю!")
-            
-            // очистка полей Email и Password, очистка старых ошибок
-            setError("")
             setEmail("")
             setPassword("")
-            
+            setError("")
         } catch (err) {
-            setError("Ошибка входа, иди отсюда")
+            setError("Ошибка входа")
         }
     }
 
@@ -39,14 +27,14 @@ function Login({ setUser }) {
             <input
                 placeholder="Email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
             />
 
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
             />
 
             <button onClick={handleLogin}>Login</button>
