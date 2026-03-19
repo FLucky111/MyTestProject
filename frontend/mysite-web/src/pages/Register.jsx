@@ -1,7 +1,7 @@
 import { useState } from "react"
 import api from "../api/api"
 
-function Register() {
+function Register({ setUser }) {
     const [email, setEmail] = useState("")
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
@@ -16,6 +16,13 @@ function Register() {
             })
             
             alert("Вы зарегистрировались, вы молодец!")
+
+            // очистка полей UserName, Email и Password, очистка старых ошибок
+            setError("")
+            setUserName("")
+            setEmail("")
+            setPassword("")
+            
         } catch (err) {
             setError("Ошибка регистрации, жесть, поменяй ник или почту")
         }
